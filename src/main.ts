@@ -3,6 +3,7 @@ import { Client, Success, Failure, Cancelled, Custom } from './client';
 
 async function run(): Promise<void> {
   try {
+    const environment = core.getInput('environment');
     const status = core.getInput('status', { required: true }).toLowerCase();
     const mention = core.getInput('mention');
     const author_name = core.getInput('author_name');
@@ -16,6 +17,7 @@ async function run(): Promise<void> {
     const payload = core.getInput('payload');
     const fields = core.getInput('fields');
 
+    core.debug(`environment: ${environment}`);
     core.debug(`status: ${status}`);
     core.debug(`mention: ${mention}`);
     core.debug(`author_name: ${author_name}`);
@@ -31,6 +33,7 @@ async function run(): Promise<void> {
 
     const client = new Client(
       {
+        environment,
         status,
         mention,
         author_name,

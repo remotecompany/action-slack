@@ -17,6 +17,7 @@ type AlwaysType = 'always';
 export type GitHub = InstanceType<typeof GitHub>;
 
 export interface With {
+  environment: string;
   status: string;
   mention: string;
   author_name: string;
@@ -45,7 +46,7 @@ export class Client {
 
   constructor(props: With, token?: string, webhookUrl?: string) {
     this.with = props;
-    if (this.with.fields === '') this.with.fields = 'repo,commit';
+    if (this.with.fields === '') this.with.fields = 'all';
 
     if (token !== undefined) {
       this.github = getOctokit(token);
@@ -57,6 +58,7 @@ export class Client {
     this.webhook = new IncomingWebhook(webhookUrl);
     this.fieldFactory = new FieldFactory(
       this.with.fields,
+      this.with.environment,
       this.jobName,
       this.github,
     );
