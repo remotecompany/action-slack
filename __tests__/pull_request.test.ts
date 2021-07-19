@@ -37,7 +37,7 @@ describe('pull request event', () => {
       channel: '',
       fields: 'action,environment',
     };
-    const client = new Client(withParams, "test", process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, 'test', process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(withParams.fields, `<@user_id> ${msg}`, sha);
     payload.attachments[0].color = 'good';

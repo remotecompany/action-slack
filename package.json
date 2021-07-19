@@ -3,7 +3,7 @@
   "version": "3.5.2",
   "private": true,
   "description": "You can notify slack of GitHub Actions.",
-  "main": "lib/main.js",
+  "main": "src/main.ts",
   "scripts": {
     "build": "tsc",
     "format": "prettier --write **/*.ts",

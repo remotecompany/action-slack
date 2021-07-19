@@ -39,7 +39,7 @@ describe('MATRIX_CONTEXT', () => {
       channel: '',
       fields: 'job,took,environment',
     };
-    const client = new Client(withParams, "test", process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, 'test', process.env.GITHUB_TOKEN, '');
     expect(await client.prepare('')).toStrictEqual({
       text: successMsg,
       attachments: [

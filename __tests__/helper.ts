@@ -54,7 +54,7 @@ export const getApiFixture = (name: string): any =>
   );
 
 export const fixedFields = (fields: string, sha?: string) => {
-  const ff = new FieldFactory(fields, process.env.GITHUB_JOB as string, "test");
+  const ff = new FieldFactory(fields, process.env.GITHUB_JOB as string, 'test');
 
   return ff.filterField(
     [
@@ -83,12 +83,12 @@ export const repo = (): Field => {
 };
 
 export const environment = (): Field => {
-    return {
-      short: true,
-      title: 'environment',
-      value: 'test',
-    };
+  return {
+    short: true,
+    title: 'environment',
+    value: 'test',
   };
+};
 
 export const message = (): Field => {
   const obj: any = getApiFixture('repos.commits.get');
