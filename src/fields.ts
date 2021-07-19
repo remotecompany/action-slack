@@ -10,14 +10,19 @@ export interface Field {
 export class FieldFactory {
   private github?: GitHub;
   private fields: string[];
-  private environment: string;
   private jobName: string;
+  private env?: string;
 
-  constructor(fields: string, environment: string, jobName: string, github?: GitHub) {
+  constructor(
+    fields: string,
+    jobName: string,
+    environment?: string,
+    github?: GitHub,
+  ) {
     this.fields = fields.replace(/ /g, '').split(',');
-    this.environment = environment
     this.jobName = jobName;
     this.github = github;
+    this.env = environment;
   }
 
   includes(field: string) {
@@ -37,9 +42,9 @@ export class FieldFactory {
   async attachments(): Promise<Field[]> {
     return this.filterField(
       [
-        this.includes('env')
-            ? createAttachment('env', await this.env())
-            : undefined,
+        this.includes('environment')
+          ? createAttachment('environment', await this.environment())
+          : undefined,
         this.includes('repo')
           ? createAttachment('repo', await this.repo())
           : undefined,
@@ -86,9 +91,9 @@ export class FieldFactory {
     return value;
   }
 
-  private async env(): Promise<string | undefined> {
-    if (this.environment === undefined) return undefined;
-    const value = `${this.environment}`;
+  private async environment(): Promise<string | undefined> {
+    if (this.env === undefined) return undefined;
+    const value = `${this.env}`;
 
     process.env.AS_ENV = value;
     return value;

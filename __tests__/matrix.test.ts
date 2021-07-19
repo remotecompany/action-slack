@@ -37,9 +37,9 @@ describe('MATRIX_CONTEXT', () => {
       icon_emoji: '',
       icon_url: '',
       channel: '',
-      fields: 'job,took',
+      fields: 'job,took,environment',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test", process.env.GITHUB_TOKEN, '');
     expect(await client.prepare('')).toStrictEqual({
       text: successMsg,
       attachments: [
@@ -47,6 +47,7 @@ describe('MATRIX_CONTEXT', () => {
           author_name: '',
           color: 'good',
           fields: [
+            { short: true, title: 'environment', value: 'test' },
             {
               short: true,
               title: 'job',

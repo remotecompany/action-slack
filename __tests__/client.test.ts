@@ -48,11 +48,14 @@ describe('8398a7/action-slack', () => {
         icon_url: '',
         channel: '',
         fields:
-          'repo,message,commit,author,job,action,eventName,ref,workflow,took',
+          'repo,job,action,eventName,ref,workflow,took,environment',
       };
-      const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+      const client = new Client(withParams, "test", process.env.GITHUB_TOKEN, '');
       const payload = getTemplate(withParams.fields, successMsg);
       payload.attachments[0].color = 'good';
+      payload.attachments[0].fields = payload.attachments[0].fields.filter(
+        (field: any) => !['message', 'commit', 'author'].includes(field.title),
+      );
       expect(await client.prepare('')).toStrictEqual(payload);
     });
   });
@@ -70,7 +73,7 @@ describe('8398a7/action-slack', () => {
         channel: '',
         fields: '',
       };
-      const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+      const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
       const payload = getTemplate(withParams.fields, successMsg);
       payload.attachments[0].color = 'good';
       expect(await client.prepare('')).toStrictEqual(payload);
@@ -87,7 +90,7 @@ describe('8398a7/action-slack', () => {
         channel: '',
         fields: '',
       };
-      const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+      const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
       const payload = getTemplate(withParams.fields, failMsg);
       payload.attachments[0].color = 'danger';
       expect(await client.prepare('')).toStrictEqual(payload);
@@ -104,7 +107,7 @@ describe('8398a7/action-slack', () => {
         channel: '',
         fields: '',
       };
-      const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+      const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
       const payload = getTemplate(withParams.fields, cancelMsg);
       payload.attachments[0].color = 'warning';
       expect(await client.prepare('')).toStrictEqual(payload);
@@ -123,7 +126,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(withParams.fields, msg);
     payload.attachments[0].color = 'good';
@@ -142,7 +145,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    let client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    let client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     let payload = getTemplate(withParams.fields, msg);
     payload.attachments[0].color = 'good';
@@ -150,7 +153,7 @@ describe('8398a7/action-slack', () => {
 
     withParams.mention = '';
     withParams.status = Failure;
-    client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     payload = getTemplate(withParams.fields, msg);
     payload.attachments[0].color = 'danger';
     expect(await client.prepare(msg)).toStrictEqual(payload);
@@ -168,7 +171,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(withParams.fields, `<!here> ${msg}`);
     payload.attachments[0].color = 'good';
@@ -187,7 +190,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(withParams.fields, `<!here> ${msg}`);
     payload.attachments[0].color = 'good';
@@ -206,7 +209,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(withParams.fields, `<!here> ${msg}`);
     payload.attachments[0].color = 'danger';
@@ -225,7 +228,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(withParams.fields, `<!here> ${msg}`);
     payload.attachments[0].color = 'warning';
@@ -244,7 +247,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    let client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    let client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     let payload = getTemplate(withParams.fields, `<!here> ${msg}`);
     payload.attachments[0].color = 'good';
@@ -253,13 +256,13 @@ describe('8398a7/action-slack', () => {
     payload = getTemplate(withParams.fields, `<!here> ${msg}`);
     payload.attachments[0].color = 'danger';
     withParams.status = Failure;
-    client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     expect(await client.prepare(msg)).toStrictEqual(payload);
 
     payload = getTemplate(withParams.fields, `<!here> ${msg}`);
     payload.attachments[0].color = 'warning';
     withParams.status = Cancelled;
-    client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     expect(await client.prepare(msg)).toStrictEqual(payload);
   });
 
@@ -275,7 +278,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(withParams.fields, `<@user_id> ${msg}`);
     payload.attachments[0].color = 'good';
@@ -294,7 +297,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(withParams.fields, `<!here> ${msg}`);
     payload.attachments[0].color = 'good';
@@ -313,7 +316,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(withParams.fields, `<!channel> ${msg}`);
     payload.attachments[0].color = 'good';
@@ -332,7 +335,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(
       withParams.fields,
@@ -354,7 +357,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(
       withParams.fields,
@@ -376,7 +379,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(
       withParams.fields,
@@ -398,7 +401,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'mention test';
     const payload = getTemplate(
       withParams.fields,
@@ -420,7 +423,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    let client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    let client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'hello';
 
     let payload = getTemplate(
@@ -443,7 +446,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    let client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    let client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     const msg = 'hello';
 
     // for success
@@ -453,14 +456,14 @@ describe('8398a7/action-slack', () => {
 
     // for cancel
     withParams.status = Cancelled;
-    client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     payload = getTemplate(withParams.fields, msg);
     payload.attachments[0].color = 'warning';
     expect(await client.prepare(msg)).toStrictEqual(payload);
 
     // for fail
     withParams.status = Failure;
-    client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+    client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
     payload = getTemplate(withParams.fields, msg);
     payload.attachments[0].color = 'danger';
     expect(await client.prepare(msg)).toStrictEqual(payload);
@@ -478,7 +481,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: 'message,author',
     };
-    const client = new Client(withParams, undefined, '');
+    const client = new Client(withParams, "test",  undefined, '');
     const payload = getTemplate(withParams.fields, successMsg);
     payload.attachments[0].color = 'good';
     payload.attachments[0].fields = payload.attachments[0].fields.filter(
@@ -498,7 +501,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    expect(() => new Client(withParams, undefined)).toThrow(
+    expect(() => new Client(withParams, "test",  undefined)).toThrow(
       'Specify secrets.SLACK_WEBHOOK_URL',
     );
   });
@@ -527,7 +530,7 @@ describe('8398a7/action-slack', () => {
       channel: '',
       fields: '',
     };
-    const client = new Client(withParams, undefined, mockSlackWebhookUrl);
+    const client = new Client(withParams, "test",  undefined, mockSlackWebhookUrl);
 
     await client.send('payload');
 
@@ -546,7 +549,7 @@ describe('8398a7/action-slack', () => {
         channel: '',
         fields: 'all',
       };
-      const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+      const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
       expect(
         await client.custom(`{
           text: \`\${process.env.AS_WORKFLOW}
@@ -571,7 +574,7 @@ describe('8398a7/action-slack', () => {
         channel: '',
         fields: '',
       };
-      const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+      const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
       expect(() => client.injectColor()).toThrow();
     });
   });
@@ -588,7 +591,8 @@ describe('8398a7/action-slack', () => {
         channel: '',
         fields: '',
       };
-      const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+
+      const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
       expect(() => client.injectText('')).toThrow();
     });
   });
@@ -605,7 +609,7 @@ describe('8398a7/action-slack', () => {
         channel: '',
         fields: '',
       };
-      const client = new Client(withParams, process.env.GITHUB_TOKEN, '');
+      const client = new Client(withParams, "test",  process.env.GITHUB_TOKEN, '');
       expect(client.mentionText(Success)).toStrictEqual(
         '<@test1> <@test2> <!here> ',
       );

@@ -54,9 +54,11 @@ export const getApiFixture = (name: string): any =>
   );
 
 export const fixedFields = (fields: string, sha?: string) => {
-  const ff = new FieldFactory(fields, process.env.GITHUB_JOB as string);
+  const ff = new FieldFactory(fields, process.env.GITHUB_JOB as string, "test");
+
   return ff.filterField(
     [
+      ff.includes('environment') ? environment() : undefined,
       ff.includes('repo') ? repo() : undefined,
       ff.includes('message') ? message() : undefined,
       ff.includes('commit') ? commit() : undefined,
@@ -79,6 +81,14 @@ export const repo = (): Field => {
     value: '<https://github.com/8398a7/action-slack|8398a7/action-slack>',
   };
 };
+
+export const environment = (): Field => {
+    return {
+      short: true,
+      title: 'environment',
+      value: 'test',
+    };
+  };
 
 export const message = (): Field => {
   const obj: any = getApiFixture('repos.commits.get');

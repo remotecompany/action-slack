@@ -10,7 +10,7 @@
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
     "pack": "ncc build",
-    "test": "jest && codecov",
+    "test": "jest",
     "test-for-local": "jest",
     "all": "npm run build && npm run format-check && npm run lint && npm run pack && npm test",
     "release": "npm run build && npm run pack",

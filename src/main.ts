@@ -33,7 +33,6 @@ async function run(): Promise<void> {
 
     const client = new Client(
       {
-        environment,
         status,
         mention,
         author_name,
@@ -44,6 +43,7 @@ async function run(): Promise<void> {
         channel,
         fields,
       },
+      environment,
       process.env.GITHUB_TOKEN,
       process.env.SLACK_WEBHOOK_URL,
     );
