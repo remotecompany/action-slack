@@ -2,6 +2,10 @@ name: action-slack
 description: You can notify slack of GitHub Actions.
 author: remotecompany
 inputs:
+  environment:
+    description: Add an environment to the slack message.
+    default: ""
+    required: false
   status:
     description: Specify success or failure or cancelled or custom.
     required: true
